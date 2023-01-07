@@ -10,7 +10,7 @@ const {
   changeContact,
 } = require("../../controllers/controllers");
 
-const addContactSchema = Joi.object({
+const ContactSchema = Joi.object({
   name: Joi.string().min(3).required().messages({
     "any.required": "you should provide title!!",
   }),
@@ -20,25 +20,19 @@ const addContactSchema = Joi.object({
   phone: Joi.string().required().min(6),
 });
 
-const changeContactSchema = Joi.object({
-  name: Joi.string().min(3),
-  email: Joi.string().email(),
-  phone: Joi.string().min(6),
-});
-
 const router = express.Router();
 
 router.get("/", tryCatchWrapper(getContacts));
 
 router.get("/:contactId", tryCatchWrapper(getContact));
 
-router.post("/", validateBody(addContactSchema), tryCatchWrapper(addContact));
+router.post("/", validateBody(ContactSchema), tryCatchWrapper(addContact));
 
 router.delete("/:contactId", tryCatchWrapper(removeContact));
 
 router.put(
   "/:contactId",
-  validateBody(changeContactSchema),
+  validateBody(ContactSchema),
   tryCatchWrapper(changeContact)
 );
 

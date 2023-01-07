@@ -33,6 +33,10 @@ async function removeContact(req, res, next) {
 
 async function changeContact(req, res, next) {
   const { contactId } = req.params;
+  const body = req.body;
+  if (!body) {
+    return next(HttpError(400, "missing fields"));
+  }
   const contact = await contactsDataBase.updateContact(contactId, req.body);
   if (!contact) {
     return next(HttpError(404, "not found"));
