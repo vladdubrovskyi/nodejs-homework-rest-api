@@ -1,47 +1,45 @@
 const express = require("express");
-const contactsDataBase = require("../../models/contacts");
+const Joi = require("joi");
+const { validateBody } = require("../../middlewares/index");
+const { tryCatchWrapper } = require("../../helpers/index");
+const {
+  getContacts,
+  getContact,
+  addContact,
+  removeContact,
+  changeContact,
+} = require("../../controllers/controllers");
+
+const addContactSchema = Joi.object({
+  name: Joi.string().min(3).required().messages({
+    "any.required": "you should provide title!!",
+  }),
+  email: Joi.string().email().required().messages({
+    "any.required": "you should provide email!!",
+  }),
+  phone: Joi.string().required().min(6),
+});
+
+const changeContactSchema = Joi.object({
+  name: Joi.string().min(3),
+  email: Joi.string().email(),
+  phone: Joi.string().min(6),
+});
 
 const router = express.Router();
 
-router.get("/", async (_, res) => {
-  const contacts = await contactsDataBase.listContacts();
-  return res.json(contacts);
-});
+router.get("/", tryCatchWrapper(getContacts));
 
-router.get("/:contactId", async (req, res, next) => {
-  const { contactId } = req.params;
-  const contact = await contactsDataBase.getContactById(contactId);
+router.get("/:contactId", tryCatchWrapper(getContact));
 
-  if (!contact) {
-    return next();
-  }
-  return res.json(contact);
-});
+router.post("/", validateBody(addContactSchema), tryCatchWrapper(addContact));
 
-router.post("/", async (req, res) => {
-  const { name, email, phone } = req.body;
-  const newContact = await contactsDataBase.addContact(name, email, phone);
-  return res.status(201).json(newContact);
-});
+router.delete("/:contactId", tryCatchWrapper(removeContact));
 
-router.delete("/:contactId", async (req, res, next) => {
-  const { contactId } = req.params;
-  const contact = await contactsDataBase.getContactById(contactId);
-  if (!contact) {
-    return next();
-  }
-  await contactsDataBase.removeContact(contactId);
-  return res.status(200).json(contact);
-});
-
-router.put("/:contactId", async (req, res, next) => {
-  const { contactId } = req.params;
-  const contact = await contactsDataBase.updateContact(contactId, req.body);
-  if (!contact) {
-    return next();
-  }
-
-  return res.status(200).json(contact);
-});
+router.put(
+  "/:contactId",
+  validateBody(changeContactSchema),
+  tryCatchWrapper(changeContact)
+);
 
 module.exports = router;

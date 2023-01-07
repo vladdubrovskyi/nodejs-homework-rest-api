@@ -46,14 +46,18 @@ const addContact = async (name, email, phone) => {
 };
 
 const updateContact = async (contactId, body) => {
-  const dataBase = await readDataBase();
-  const index = dataBase.findIndex((contact) => contact.id === contactId);
-  if (index === -1) {
-    return null;
+  try {
+    const dataBase = await readDataBase();
+    const index = dataBase.findIndex((contact) => contact.id === contactId);
+    if (index === -1) {
+      return null;
+    }
+    dataBase[index] = { id: contactId, ...body };
+    await writeDataBase(dataBase);
+    return dataBase[index];
+  } catch (err) {
+    return console.log(err.message);
   }
-  dataBase[index] = { ...body, contactId };
-  await writeDataBase(dataBase);
-  return dataBase[index];
 };
 
 module.exports = {
