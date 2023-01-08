@@ -5,7 +5,7 @@ const {
   deleteContact,
   updateContact,
 } = require("../models/contacts");
-const { HttpError } = require("../helpers/index");
+const { hanldeError } = require("../helpers/index");
 
 async function getContacts(_, res) {
   const contacts = await listContacts();
@@ -16,7 +16,7 @@ async function getContact(req, res, next) {
   const { contactId } = req.params;
   const contact = await getContactById(contactId);
   if (!contact) {
-    return next(HttpError(404, "Not found"));
+    return next(hanldeError("Not Found", 404));
   }
   return res.json(contact);
 }
@@ -31,7 +31,7 @@ async function removeContact(req, res, next) {
   const { contactId } = req.params;
   const contact = await getContactById(contactId);
   if (!contact) {
-    return next(HttpError(404, "No contact"));
+    return next(hanldeError("No contact", 404));
   }
   await deleteContact(contactId);
   return res.status(200).json(contact);
@@ -41,7 +41,7 @@ async function changeContact(req, res, next) {
   const { contactId } = req.params;
   const contact = await updateContact(contactId, req.body);
   if (!contact) {
-    return next(HttpError(404, "not found"));
+    return next(hanldeError("not found", 404));
   }
 
   return res.status(200).json(contact);
