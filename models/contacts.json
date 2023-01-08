@@ -64,5 +64,11 @@
     "name": "Vasyl",
     "email": "vasyl@mail.com",
     "phone": "077-77-77"
+  },
+  {
+    "id": "42bf5a5d-4422-4567-bb13-5da52526fd37",
+    "name": "Mad Max",
+    "email": "maxman@egetlacus.ca",
+    "phone": "(123) 77-77-77"
   }
 ]

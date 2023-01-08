@@ -1,5 +1,6 @@
 const express = require("express");
-const ContactSchema = require("../../schema/schema");
+const { ContactUpdateSchema } = require("../../schema/schema");
+const { ContactSchema } = require("../../schema/schema");
 const { validateBody } = require("../../middlewares/index");
 const { tryCatchWrapper } = require("../../helpers/index");
 const {
@@ -22,7 +23,7 @@ router.delete("/:contactId", tryCatchWrapper(removeContact));
 
 router.put(
   "/:contactId",
-  validateBody(ContactSchema),
+  validateBody(ContactUpdateSchema),
   tryCatchWrapper(changeContact)
 );
 
