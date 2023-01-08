@@ -1,5 +1,5 @@
 const express = require("express");
-const Joi = require("joi");
+const ContactSchema = require("../../schema/schema");
 const { validateBody } = require("../../middlewares/index");
 const { tryCatchWrapper } = require("../../helpers/index");
 const {
@@ -9,16 +9,6 @@ const {
   removeContact,
   changeContact,
 } = require("../../controllers/controllers");
-
-const ContactSchema = Joi.object({
-  name: Joi.string().min(3).required().messages({
-    "any.required": "you should provide title!!",
-  }),
-  email: Joi.string().email().required().messages({
-    "any.required": "you should provide email!!",
-  }),
-  phone: Joi.string().required().min(6),
-});
 
 const router = express.Router();
 

@@ -26,7 +26,7 @@ const getContactById = async (contactId) => {
   return contact || null;
 };
 
-const removeContact = async (contactId) => {
+const deleteContact = async (contactId) => {
   const dataBase = await readDataBase();
   const updatedDataBase = dataBase.filter(
     (contact) => contact.id !== contactId
@@ -34,7 +34,7 @@ const removeContact = async (contactId) => {
   await writeDataBase(updatedDataBase);
 };
 
-const addContact = async (name, email, phone) => {
+const createContact = async (name, email, phone) => {
   const id = uuidv4();
   const contact = { id, name, email, phone };
   const dataBase = await readDataBase();
@@ -63,7 +63,7 @@ const updateContact = async (contactId, body) => {
 module.exports = {
   listContacts,
   getContactById,
-  removeContact,
-  addContact,
+  deleteContact,
+  createContact,
   updateContact,
 };
