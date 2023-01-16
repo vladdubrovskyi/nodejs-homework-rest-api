@@ -11,6 +11,7 @@ async function main() {
   try {
     await mongoose.connect(HOST_URI);
     console.log("Database connection successful");
+    console.log(HOST_URI);
 
     app.listen(3000, () => {
       console.log("server is listening on port 3000");
