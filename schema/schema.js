@@ -16,7 +16,14 @@ const ContactUpdateSchema = Joi.object({
   phone: Joi.string().min(6),
 }).min(1);
 
+const FavoriteStatusSchema = Joi.object({
+  favorite: Joi.boolean().required().messages({
+    "any.required": `missing favorite field`,
+  }),
+});
+
 module.exports = {
   ContactSchema: ContactSchema,
   ContactUpdateSchema: ContactUpdateSchema,
+  FavoriteStatusSchema: FavoriteStatusSchema,
 };
