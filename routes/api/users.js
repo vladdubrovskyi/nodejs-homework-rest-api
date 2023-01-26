@@ -4,12 +4,19 @@ const express = require("express");
 // const { FavoriteStatusSchema } = require("../../schema/schema");
 // const { validateBody } = require("../../middlewares/index");
 const { tryCatchWrapper } = require("../../helpers/index");
-const { register, login } = require("../../controllers/authController");
+const { register, login, logout } = require("../../controllers/authController");
+const { auth } = require("../../middlewares/index");
 
 const authRouter = express.Router();
 
 authRouter.post("/users/register", tryCatchWrapper(register));
 
 authRouter.post("/users/login", tryCatchWrapper(login));
+
+authRouter.post(
+  "/users/logout",
+  tryCatchWrapper(auth),
+  tryCatchWrapper(logout)
+);
 
 module.exports = authRouter;

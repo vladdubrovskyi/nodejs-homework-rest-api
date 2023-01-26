@@ -49,6 +49,7 @@ async function login(req, res, next) {
 
   const payload = { id: storedUser._id };
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+  await User.findByIdAndUpdate(storedUser._id, { token });
 
   return res.json({
     user: { email },
@@ -58,7 +59,16 @@ async function login(req, res, next) {
   });
 }
 
+const logout = async (req, res) => {
+  const { id } = req.user;
+
+  await User.findByIdAndUpdate(id, { token: null });
+
+  res.status(204).json();
+};
+
 module.exports = {
   register,
   login,
+  logout,
 };
