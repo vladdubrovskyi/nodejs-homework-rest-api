@@ -4,7 +4,12 @@ const express = require("express");
 // const { FavoriteStatusSchema } = require("../../schema/schema");
 // const { validateBody } = require("../../middlewares/index");
 const { tryCatchWrapper } = require("../../helpers/index");
-const { register, login, logout } = require("../../controllers/authController");
+const {
+  register,
+  login,
+  logout,
+  current,
+} = require("../../controllers/authController");
 const { auth } = require("../../middlewares/index");
 
 const authRouter = express.Router();
@@ -17,6 +22,11 @@ authRouter.post(
   "/users/logout",
   tryCatchWrapper(auth),
   tryCatchWrapper(logout)
+);
+authRouter.get(
+  "/users/current",
+  tryCatchWrapper(auth),
+  tryCatchWrapper(current)
 );
 
 module.exports = authRouter;
