@@ -9,8 +9,9 @@ const {
   login,
   logout,
   current,
+  updateAvatar,
 } = require("../../controllers/authController");
-const { auth } = require("../../middlewares/index");
+const { auth, upload } = require("../../middlewares/index");
 
 const authRouter = express.Router();
 
@@ -27,6 +28,13 @@ authRouter.get(
   "/users/current",
   tryCatchWrapper(auth),
   tryCatchWrapper(current)
+);
+
+authRouter.patch(
+  "/users/avatars",
+  tryCatchWrapper(auth),
+  upload.single("avatar"),
+  tryCatchWrapper(updateAvatar)
 );
 
 module.exports = authRouter;
