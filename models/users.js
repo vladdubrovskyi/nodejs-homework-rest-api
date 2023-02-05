@@ -17,6 +17,10 @@ const schema = mongoose.Schema(
       default: "starter",
     },
 
+    avatarURL: {
+      type: String,
+    },
+
     token: { type: String },
   },
   {
