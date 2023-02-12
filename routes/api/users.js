@@ -10,8 +10,11 @@ const {
   logout,
   current,
   updateAvatar,
+  verify,
+  resendEmail,
 } = require("../../controllers/authController");
-const { auth, upload } = require("../../middlewares/index");
+const { auth, upload, validateBody } = require("../../middlewares/index");
+const { ValidateEmailSchema } = require("../../schema/schema");
 
 const authRouter = express.Router();
 
@@ -35,6 +38,14 @@ authRouter.patch(
   tryCatchWrapper(auth),
   upload.single("avatar"),
   tryCatchWrapper(updateAvatar)
+);
+
+authRouter.get("/users/verify/:verificationToken", tryCatchWrapper(verify));
+
+authRouter.post(
+  "/users/verify",
+  validateBody(ValidateEmailSchema),
+  tryCatchWrapper(resendEmail)
 );
 
 module.exports = authRouter;

@@ -22,8 +22,15 @@ const FavoriteStatusSchema = Joi.object({
   }),
 });
 
+const ValidateEmailSchema = Joi.object({
+  email: Joi.string().email().required().messages({
+    "any.required": "missing required field email",
+  }),
+});
+
 module.exports = {
   ContactSchema: ContactSchema,
   ContactUpdateSchema: ContactUpdateSchema,
   FavoriteStatusSchema: FavoriteStatusSchema,
+  ValidateEmailSchema: ValidateEmailSchema,
 };
